@@ -29,6 +29,7 @@ import { PaymentInformationModule } from './modules/payment-information/payment-
 import { StatisticModule } from './modules/statistic/statistic.module';
 import { StudioModule } from './modules/studio/studio.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { PaypalModule } from './modules/paypal/paypal.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ContactModule } from './modules/contact/contact.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public')
     }),
+    PaypalModule,
     SocketModule,
     AuthModule,
     SettingModule,

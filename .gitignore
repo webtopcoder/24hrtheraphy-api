@@ -11,4 +11,5 @@
 # production
 /build
 
-
+dist/
+.env
