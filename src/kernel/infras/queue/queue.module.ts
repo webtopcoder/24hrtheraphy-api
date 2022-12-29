@@ -51,9 +51,9 @@ export class QueueModule {
           nearTermWindow: 1200000,
           delayedDebounce: 1000,
           redis: {
-            host: '127.0.0.1',
-            port: 6379,
-            db: 0,
+            host: process.env.REDIS_HOST || '127.0.0.1',
+            port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+            db: parseInt(process.env.REDIS_DB, 10) || 0,
             options: {}
           },
           isWorker: true,
