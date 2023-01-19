@@ -1,7 +1,17 @@
-import { Body, Controller, Post, Req, Res } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards
+} from "@nestjs/common";
 import { resources, Webhook } from "coinbase-commerce-node";
 import { Request, Response } from "express";
 import { ConfigService } from "nestjs-config";
+import { CurrentUser, Roles } from "src/modules/auth/decorators";
+import { RoleGuard } from "src/modules/auth/guards";
 import { MailerService } from "src/modules/mailer";
 import { PAYMENT_STATUS } from "src/modules/payment/constants";
 import { PaymentTransactionModel } from "src/modules/payment/models";
@@ -9,6 +19,7 @@ import { OrderService } from "src/modules/payment/services";
 import { PaymentTokenService } from "src/modules/purchased-item/services";
 import { UserDto } from "src/modules/user/dtos";
 import { UserService } from "src/modules/user/services";
+import { CoinbaseChargeDto } from "../dtos/CoinbaseCharge.dto";
 
 import { CoinbaseService } from "../services/coinbase.service";
 
@@ -19,6 +30,14 @@ export class CoinbaseController {
     private readonly configService: ConfigService,
     private readonly orderService: OrderService
   ) {}
+
+  @Roles("user")
+  @UseGuards(RoleGuard)
+  @Post("charge")
+  async charge(@Body() body: CoinbaseChargeDto, @CurrentUser() user: UserDto) {
+    const charge = await this.coinbaseService.createCharge(user, body);
+    return charge;
+  }
 
   @Post("webhook")
   async webhookHandler(
