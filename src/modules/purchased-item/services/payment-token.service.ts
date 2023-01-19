@@ -1,14 +1,14 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { UserDto } from 'src/modules/user/dtos';
-import { ObjectId } from 'mongodb';
-import { PurchaseItemModel } from '../models/purchase-item.model';
-import { PURCHASE_ITEM_MODEL_PROVIDER } from '../providers';
+import { Injectable, Inject } from "@nestjs/common";
+import { Model } from "mongoose";
+import { UserDto } from "src/modules/user/dtos";
+import { ObjectId } from "mongodb";
+import { PurchaseItemModel } from "../models/purchase-item.model";
+import { PURCHASE_ITEM_MODEL_PROVIDER } from "../providers";
 import {
   PURCHASE_ITEM_TYPE,
   PURCHASE_ITEM_STATUS,
   PurchaseItemType
-} from '../constants';
+} from "../constants";
 
 @Injectable()
 export class PaymentTokenService {
@@ -45,6 +45,10 @@ export class PaymentTokenService {
       status: PURCHASE_ITEM_STATUS.SUCCESS
     });
     return !!transaction;
+  }
+
+  public async findById(id: string | ObjectId) {
+    return this.PaymentTokenModel.findById(id);
   }
 
   public async findByQuery(query: any) {
